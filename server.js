@@ -15,12 +15,12 @@ server.get("/", async (req, res) => {
 });
 
 server.post("/", async (req, res) => {
+  const data = req.body;
   try {
-    const data = req.body;
     const test = await db("test").insert(data);
-    res.status(201).json({ test });
+    res.status(201).json({ data });
   } catch (error) {
-    res.status(500).json({ message: "can't post" });
+    res.status(500).json({ message: "can't post", data });
   }
 });
 
@@ -28,8 +28,8 @@ server.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const test = await db("test")
-      .remove()
-      .where({ Id: id });
+      .where({ id: id })
+      .del();
     res.status(200).json({ message: "successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: "can't delete" });
